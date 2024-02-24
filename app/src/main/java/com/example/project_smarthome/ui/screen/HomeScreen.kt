@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Tv
+import androidx.compose.material.icons.outlined.Devices
 import androidx.compose.material.icons.outlined.PowerSettingsNew
 import androidx.compose.material.icons.outlined.Tv
 import androidx.compose.material3.Card
@@ -39,7 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.project_smarthome.R
+import com.example.project_smarthome.data.mappingIcon
 import com.example.project_smarthome.data.mockDeviceList
+import com.example.project_smarthome.data.translateKorean
 import com.example.project_smarthome.network.Device
 import com.example.project_smarthome.network.DeviceStatus
 
@@ -73,7 +76,7 @@ fun DeviceStatusCard(modifier: Modifier = Modifier, device: Device) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
-                    Icons.Outlined.Tv,
+                    mappingIcon.get(device.category) ?: Icons.Outlined.Devices,
                     modifier = Modifier
                         .fillMaxHeight()
                         .align(Alignment.CenterVertically),
@@ -88,20 +91,24 @@ fun DeviceStatusCard(modifier: Modifier = Modifier, device: Device) {
             }
             Column {
                 Text(
-                    text = device.location,
+                    text = translateKorean.get(device.location) ?: device.location,
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = device.category,
+                    text = translateKorean.get(device.category) ?: device.category,
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = if (device.status == DeviceStatus.ON) {
-                        "켜짐"
-                    } else if (device.status == DeviceStatus.OFF){
-                        "꺼짐"
-                    } else {
-                        "로딩 중"
+                    text = when (device.status) {
+                        DeviceStatus.ON -> {
+                            "켜짐"
+                        }
+                        DeviceStatus.OFF -> {
+                            "꺼짐"
+                        }
+                        else -> {
+                            "로딩 중"
+                        }
                     },
                     style = MaterialTheme.typography.bodyMedium
                 )
