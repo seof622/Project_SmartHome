@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Project_SmartHome</string>
-    <string name="HomeScreenTitle">우리 집 IOT</string>
+    <string name="home_title">SmartHome</string>
+    <string name="add_devices">기기 추가</string>
 </resources>

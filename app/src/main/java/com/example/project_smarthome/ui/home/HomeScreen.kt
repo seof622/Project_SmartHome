@@ -1,9 +1,7 @@
-package com.example.project_smarthome.ui.screen
+package com.example.project_smarthome.ui.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,26 +9,21 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material.icons.outlined.Devices
 import androidx.compose.material.icons.outlined.PowerSettingsNew
-import androidx.compose.material.icons.outlined.Tv
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,10 +42,22 @@ import com.example.project_smarthome.network.DeviceStatus
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
     Scaffold (topBar = { SmartHomeAppBar() }) {
-        DeviceGridScreen(
-            modifier = Modifier.padding(it),
-            devices = mockDeviceList
-        )
+        Column(modifier = Modifier.padding(it)) {
+            Button(
+                modifier=  Modifier.
+                    padding(12.dp),
+                onClick = { /*TODO*/ }
+            ) {
+                Text(
+                    text = stringResource(R.string.add_devices),
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(4.dp)
+                )
+            }
+            DeviceGridScreen(
+                devices = mockDeviceList
+            )
+        }
     }
 }
 
@@ -72,7 +77,9 @@ fun DeviceStatusCard(modifier: Modifier = Modifier, device: Device) {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
@@ -141,7 +148,7 @@ fun SmartHomeAppBar(modifier : Modifier = Modifier) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = stringResource(R.string.HomeScreenTitle),
+                text = stringResource(R.string.home_title),
                 fontSize = 20.sp
             )
         }
@@ -154,22 +161,23 @@ fun SmartHomeAppBar(modifier : Modifier = Modifier) {
 //    HomeScreen(Modifier.fillMaxSize())
 //}
 //
-//@Preview(showBackground = true)
-//@Composable
-//fun DeviceCardPreview() {
-//    DeviceStatusCard(
-//        modifier = Modifier,
-//        Device(
-//            id = "1",
-//            category = "가스레인지",
-//            location = "거실",
-//            status = "on"
-//            )
-//    )
-//}
+@Preview(showBackground = true)
+@Composable
+fun DeviceCardPreview() {
+    DeviceStatusCard(
+        modifier = Modifier,
+        Device(
+            id = "1",
+            category = "가스레인지",
+            location = "거실",
+            status = DeviceStatus.ON
+            )
+    )
+}
 
 @Preview(showBackground = true)
 @Composable
 fun DeviceGridScreenPreview() {
-    DeviceGridScreen(modifier = Modifier.fillMaxSize(), devices = mockDeviceList)
+    HomeScreen(modifier = Modifier.fillMaxSize())
 }
+
