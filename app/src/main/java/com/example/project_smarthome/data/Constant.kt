@@ -26,5 +26,5 @@ val translateKorean = mapOf<String, String>(
     "Loading" to "로딩 중"
 )
 
-val mqttURL = "localHost"
+val mqttIP = "localHost"
 val mqttPort = "1883"
