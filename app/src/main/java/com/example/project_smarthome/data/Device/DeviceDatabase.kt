@@ -1,4 +1,4 @@
-package com.example.project_smarthome.data
+package com.example.project_smarthome.data.Device
 
 import android.content.Context
 import androidx.room.Database

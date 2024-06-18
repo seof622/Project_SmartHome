@@ -1,4 +1,4 @@
-package com.example.project_smarthome.data
+package com.example.project_smarthome.data.Device
 
 val mockDeviceList: List<Device> = listOf<Device>(
     Device(

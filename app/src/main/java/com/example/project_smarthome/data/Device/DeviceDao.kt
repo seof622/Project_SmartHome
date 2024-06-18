@@ -1,4 +1,4 @@
-package com.example.project_smarthome.data
+package com.example.project_smarthome.data.Device
 
 import androidx.room.Dao
 import androidx.room.Delete
