@@ -33,16 +33,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.project_smarthome.R
+import com.example.project_smarthome.SmartHomeTopAppBar
 import com.example.project_smarthome.data.Device.Device
 import com.example.project_smarthome.data.Device.DeviceStatus
 import com.example.project_smarthome.data.mappingIcon
 import com.example.project_smarthome.data.Device.mockDeviceList
 import com.example.project_smarthome.data.translateKorean
-import com.example.project_smarthome.ui.Device.DeviceSettingScreen
+import com.example.project_smarthome.ui.navigation.SmartHomeNavHost
 
 enum class SmartHomeScreen() {
     Main,
@@ -51,50 +50,33 @@ enum class SmartHomeScreen() {
 }
 
 @Composable
-fun HomeScreen(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
-) {
-    Scaffold(topBar = { SmartHomeAppBar() }) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = SmartHomeScreen.Main.name,
-        ) {
-            composable(route = SmartHomeScreen.Main.name) {
-                SmartHomeMainScreen(
-                    modifier.padding(innerPadding),
-                    onClickAddButton = { navController.navigate(SmartHomeScreen.DeviceSetting.name) }
-                )
-            }
-            composable(route = SmartHomeScreen.DeviceSetting.name) {
-                DeviceSettingScreen(
-                    modifier.padding(innerPadding),
-                    onClickNext = {navController.navigate(SmartHomeScreen.WIFISetting.name)}
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun SmartHomeMainScreen(
     modifier: Modifier = Modifier,
     onClickAddButton: () -> Unit
 ) {
-    Column(modifier = modifier) {
-        Button(
-            modifier = Modifier.padding(12.dp),
-            onClick = onClickAddButton
-        ) {
-            Text(
-                text = stringResource(R.string.add_devices),
-                fontSize = 16.sp,
-                modifier = Modifier.padding(4.dp)
+    Scaffold(
+        topBar = {
+            SmartHomeTopAppBar(
+                title = "SmartHome",
+                canNavigateBack = false
             )
         }
-        DeviceGridScreen(
-            devices = mockDeviceList
-        )
+    ) {innerPadding ->
+        Column(modifier = modifier.padding(innerPadding)) {
+            Button(
+                modifier = Modifier.padding(12.dp),
+                onClick = onClickAddButton
+            ) {
+                Text(
+                    text = stringResource(R.string.add_devices),
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(4.dp)
+                )
+            }
+            DeviceGridScreen(
+                devices = mockDeviceList
+            )
+        }
     }
 }
 
@@ -200,23 +182,23 @@ fun SmartHomeAppBar(modifier: Modifier = Modifier) {
 //    HomeScreen(Modifier.fillMaxSize())
 //}
 //
-@Preview(showBackground = true)
-@Composable
-fun DeviceCardPreview() {
-    DeviceStatusCard(
-        modifier = Modifier,
-        Device(
-            id = 1,
-            category = "가스레인지",
-            location = "거실",
-            status = DeviceStatus.ON
-        )
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DeviceCardPreview() {
+//    DeviceStatusCard(
+//        modifier = Modifier,
+//        Device(
+//            id = 1,
+//            category = "가스레인지",
+//            location = "거실",
+//            status = DeviceStatus.ON
+//        )
+//    )
+//}
 
 @Preview(showBackground = true)
 @Composable
 fun DeviceGridScreenPreview() {
-    HomeScreen(modifier = Modifier.fillMaxSize())
+    SmartHomeMainScreen(modifier = Modifier.fillMaxSize(), onClickAddButton = {})
 }
 
