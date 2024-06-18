@@ -37,11 +37,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.project_smarthome.R
+import com.example.project_smarthome.data.Device
+import com.example.project_smarthome.data.DeviceStatus
 import com.example.project_smarthome.data.mappingIcon
 import com.example.project_smarthome.data.mockDeviceList
 import com.example.project_smarthome.data.translateKorean
-import com.example.project_smarthome.network.Device
-import com.example.project_smarthome.network.DeviceStatus
 import com.example.project_smarthome.ui.home.AddDevice.DeviceSettingScreen
 
 enum class SmartHomeScreen() {
@@ -206,7 +206,7 @@ fun DeviceCardPreview() {
     DeviceStatusCard(
         modifier = Modifier,
         Device(
-            id = "1",
+            id = 1,
             category = "가스레인지",
             location = "거실",
             status = DeviceStatus.ON
