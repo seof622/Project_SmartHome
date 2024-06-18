@@ -42,7 +42,7 @@ import com.example.project_smarthome.data.Device.DeviceStatus
 import com.example.project_smarthome.data.mappingIcon
 import com.example.project_smarthome.data.Device.mockDeviceList
 import com.example.project_smarthome.data.translateKorean
-import com.example.project_smarthome.ui.home.AddDevice.DeviceSettingScreen
+import com.example.project_smarthome.ui.Device.DeviceSettingScreen
 
 enum class SmartHomeScreen() {
     Main,

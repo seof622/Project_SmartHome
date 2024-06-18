@@ -1,4 +1,4 @@
-package com.example.project_smarthome.ui.home.AddDevice
+package com.example.project_smarthome.ui.Device
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
