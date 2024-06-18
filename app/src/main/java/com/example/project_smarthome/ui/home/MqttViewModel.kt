@@ -9,10 +9,20 @@ import org.eclipse.paho.client.mqttv3.MqttClient
 import org.eclipse.paho.client.mqttv3.MqttMessage
 
 
-class HomeScreenViewModel : ViewModel() {
-    private var mqttClient: MqttClient? = null
+class MQTTViewModel : ViewModel() {
     private val mqttURL: String = "tcp://$mqttIP:$mqttPort"
 
+    companion object {
+        private var mqttClient: MqttClient? = null
+        fun connect() {
+            mqttClient?.connect()
+        }
+
+        fun setClientCallback(callback: MqttCallback) {
+            mqttClient?.setCallback(callback)
+        }
+
+    }
     init {
         mqttClient = MqttClient(mqttURL, MqttClient.generateClientId(), null)
         mqttClient?.connect()
