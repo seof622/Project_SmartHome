@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp") version "1.8.21-1.0.11"
 }
 
 android {
@@ -40,7 +41,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
     packaging {
         resources {
@@ -62,6 +63,12 @@ dependencies {
     implementation("androidx.core:core-ktx:+")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1")
+    implementation("androidx.navigation:navigation-compose:2.5.3")
+
+    implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
+    ksp("android.room:room-compiler:${rootProject.extra["room_version"]}")
+    implementation("andridx.room:room-ktx:${rootProject.extra["room_version"]}")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

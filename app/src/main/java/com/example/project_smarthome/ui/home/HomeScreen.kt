@@ -32,32 +32,69 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.project_smarthome.R
 import com.example.project_smarthome.data.mappingIcon
 import com.example.project_smarthome.data.mockDeviceList
 import com.example.project_smarthome.data.translateKorean
 import com.example.project_smarthome.network.Device
 import com.example.project_smarthome.network.DeviceStatus
+import com.example.project_smarthome.ui.home.AddDevice.DeviceSettingScreen
+
+enum class SmartHomeScreen() {
+    Main,
+    DeviceSetting,
+    WIFISetting
+}
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    Scaffold (topBar = { SmartHomeAppBar() }) {
-        Column(modifier = Modifier.padding(it)) {
-            Button(
-                modifier=  Modifier.
-                    padding(12.dp),
-                onClick = { /*TODO*/ }
-            ) {
-                Text(
-                    text = stringResource(R.string.add_devices),
-                    fontSize = 16.sp,
-                    modifier = Modifier.padding(4.dp)
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController()
+) {
+    Scaffold(topBar = { SmartHomeAppBar() }) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = SmartHomeScreen.Main.name,
+        ) {
+            composable(route = SmartHomeScreen.Main.name) {
+                SmartHomeMainScreen(
+                    modifier.padding(innerPadding),
+                    onClickAddButton = { navController.navigate(SmartHomeScreen.DeviceSetting.name) }
                 )
             }
-            DeviceGridScreen(
-                devices = mockDeviceList
+            composable(route = SmartHomeScreen.DeviceSetting.name) {
+                DeviceSettingScreen(
+                    modifier.padding(innerPadding),
+                    onClickNext = {navController.navigate(SmartHomeScreen.WIFISetting.name)}
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SmartHomeMainScreen(
+    modifier: Modifier = Modifier,
+    onClickAddButton: () -> Unit
+) {
+    Column(modifier = modifier) {
+        Button(
+            modifier = Modifier.padding(12.dp),
+            onClick = onClickAddButton
+        ) {
+            Text(
+                text = stringResource(R.string.add_devices),
+                fontSize = 16.sp,
+                modifier = Modifier.padding(4.dp)
             )
         }
+        DeviceGridScreen(
+            devices = mockDeviceList
+        )
     }
 }
 
@@ -68,11 +105,11 @@ fun DeviceStatusCard(modifier: Modifier = Modifier, device: Device) {
     } else {
         MaterialTheme.colorScheme.secondary
     }
-    Card (
+    Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = cardColor)
-    ){
-        Column (
+    ) {
+        Column(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -92,7 +129,7 @@ fun DeviceStatusCard(modifier: Modifier = Modifier, device: Device) {
                 Icon(
                     Icons.Outlined.PowerSettingsNew,
                     modifier = Modifier
-                        .clickable {  },
+                        .clickable { },
                     contentDescription = null
                 )
             }
@@ -110,9 +147,11 @@ fun DeviceStatusCard(modifier: Modifier = Modifier, device: Device) {
                         DeviceStatus.ON -> {
                             "켜짐"
                         }
+
                         DeviceStatus.OFF -> {
                             "꺼짐"
                         }
+
                         else -> {
                             "로딩 중"
                         }
@@ -133,7 +172,7 @@ fun DeviceGridScreen(modifier: Modifier = Modifier, devices: List<Device>) {
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(12.dp)
     ) {
-        items(items = devices, key = {device -> device.id}) {device->
+        items(items = devices, key = { device -> device.id }) { device ->
             DeviceStatusCard(
                 modifier = Modifier.fillMaxSize(),
                 device = device
@@ -144,7 +183,7 @@ fun DeviceGridScreen(modifier: Modifier = Modifier, devices: List<Device>) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SmartHomeAppBar(modifier : Modifier = Modifier) {
+fun SmartHomeAppBar(modifier: Modifier = Modifier) {
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -171,7 +210,7 @@ fun DeviceCardPreview() {
             category = "가스레인지",
             location = "거실",
             status = DeviceStatus.ON
-            )
+        )
     )
 }
 

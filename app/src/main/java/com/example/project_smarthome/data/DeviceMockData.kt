@@ -1,8 +1,5 @@
 package com.example.project_smarthome.data
 
-import com.example.project_smarthome.network.Device
-import com.example.project_smarthome.network.DeviceStatus
-
 val mockDeviceList: List<Device> = listOf<Device>(
     Device(
         id = "1",
