@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Project_SmartHome</string>
+    <string name="app_name">SmartHome</string>
     <string name="home_title">SmartHome</string>
-    <string name="add_devices">기기 추가</string>
+    <string name="add_devices">Add Device</string>
 </resources>

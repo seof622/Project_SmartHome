@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.project_smarthome"
+    namespace = "com.example.SmartHome"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.project_smarthome"
+        applicationId = "com.example.SmartHome"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
