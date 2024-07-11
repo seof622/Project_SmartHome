@@ -2,4 +2,5 @@
     <string name="app_name">SmartHome</string>
     <string name="home_title">SmartHome</string>
     <string name="add_devices">Add Device</string>
+    <string name="device_setting_title">Final: Device Character Set</string>
 </resources>

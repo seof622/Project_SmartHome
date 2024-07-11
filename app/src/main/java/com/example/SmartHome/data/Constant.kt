@@ -26,6 +26,9 @@ val translateKorean = mapOf<String, String>(
 
 val deviceCategoryArray: Array<String> = arrayOf("Tv", "Light", "Gas Range", "Woody Meals")
 val deviceLocationArray: Array<String> = arrayOf("LivingRoom", "Kitchen", "Parent Room", "Sister Room")
-
+val menus = mapOf<String, Array<String>>(
+    "category" to deviceCategoryArray,
+    "location" to deviceLocationArray
+)
 val mqttIP = "localHost"
 val mqttPort = "1883"

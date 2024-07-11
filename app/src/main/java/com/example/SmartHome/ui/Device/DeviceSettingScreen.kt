@@ -21,13 +21,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.SmartHome.R
 import com.example.SmartHome.SmartHomeTopAppBar
 import com.example.SmartHome.data.Device.DeviceCharacter
 import com.example.SmartHome.data.deviceCategoryArray
 import com.example.SmartHome.data.deviceLocationArray
+import com.example.SmartHome.data.menus
 import com.example.SmartHome.ui.AppViewModelProvider
 import kotlinx.coroutines.*
 
@@ -42,7 +45,7 @@ fun DeviceSettingScreen(
     Scaffold(
         topBar = {
             SmartHomeTopAppBar(
-                title = "Final: Device Character Set",
+                title = stringResource(R.string.device_setting_title),
                 canNavigateBack = true,
                 navigateUp = navigateBack
             )
@@ -59,26 +62,18 @@ fun DeviceSettingScreen(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 DeviceSettingDropDownMenu(
-                    surfaceText = viewModel.deviceUiState.deviceDetails.category,
-                    menus = deviceCategoryArray,
-                    dropMenuState = viewModel.categoryMenuState,
-                    deviceUiState = viewModel.deviceUiState,
-                    deviceCharacter = DeviceCharacter.CATEGORY,
-                    setDeviceDetails = viewModel::updateDeviceUiState,
-                    onClickDropMenu = viewModel::clickCategoryMenu,
-                    updateDropMenuText = viewModel::updateCategoryText,
-                    onDismissCallback = viewModel::dropMenuDismiss
+                    id = "category",
+                    dropMenuState = viewModel.dropDownMenuStates.value["category"]!!,
+                    onDropMenuToggle = viewModel::onDropdownMenuToggle,
+                    onSelectMenu = viewModel::updateTextField,
+                    onDismiss = viewModel::onDropdownMenuDismiss
                 )
                 DeviceSettingDropDownMenu(
-                    surfaceText = viewModel.deviceUiState.deviceDetails.location,
-                    menus = deviceLocationArray,
-                    dropMenuState = viewModel.locationMenuState,
-                    deviceUiState = viewModel.deviceUiState,
-                    deviceCharacter = DeviceCharacter.LOCATION,
-                    setDeviceDetails = viewModel::updateDeviceUiState,
-                    onClickDropMenu = viewModel::clickLocationMenu,
-                    updateDropMenuText = viewModel::updateLocationText,
-                    onDismissCallback = viewModel::dropMenuDismiss
+                    id = "location",
+                    dropMenuState = viewModel.dropDownMenuStates.value["location"]!!,
+                    onDropMenuToggle = viewModel::onDropdownMenuToggle,
+                    onSelectMenu = viewModel::updateTextField,
+                    onDismiss = viewModel::onDropdownMenuDismiss
                 )
             }
             Button(
@@ -101,20 +96,13 @@ fun DeviceSettingScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceSettingDropDownMenu(
-    surfaceText: String,
-    menus: Array<String>,
+    id: String,
     dropMenuState: DropMenuState,
-    deviceUiState: DeviceUiState,
-    setDeviceDetails: (DeviceDetails) -> Unit,
-    onClickDropMenu: () -> Unit,
-    updateDropMenuText: (String) -> Unit,
-    onDismissCallback: (DropMenuState) -> Unit,
-    deviceCharacter: DeviceCharacter,
+    onDropMenuToggle: (String) -> Unit,
+    onSelectMenu: (String, String) -> Unit,
+    onDismiss: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    /*
-    TODO - ViewModel하고 Drop Menu 연결 해야 함
-     */
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -122,7 +110,7 @@ fun DeviceSettingDropDownMenu(
     ) {
         ExposedDropdownMenuBox(
             expanded = dropMenuState.isExpanded,
-            onExpandedChange = { onClickDropMenu() }
+            onExpandedChange = { onDropMenuToggle(id) }
         ) {
             TextField(
                 value = dropMenuState.selectedText,
@@ -132,26 +120,18 @@ fun DeviceSettingDropDownMenu(
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
-                label = { Text(text = deviceCharacter.name) }
+                label = { Text(text = id) }
             )
 
             ExposedDropdownMenu(
                 expanded = dropMenuState.isExpanded,
-                onDismissRequest = { onDismissCallback(dropMenuState) }
+                onDismissRequest = { onDismiss(id) }
             ) {
-                menus.forEach { item ->
+                menus[id]?.forEach { item ->
                     DropdownMenuItem(
                         text = { Text(text = item) },
                         onClick = {
-                            when (deviceCharacter) {
-                                DeviceCharacter.CATEGORY ->
-                                    setDeviceDetails(deviceUiState.deviceDetails.copy(category = item))
-
-                                DeviceCharacter.LOCATION ->
-                                    setDeviceDetails(deviceUiState.deviceDetails.copy(location = item))
-                            }
-                            updateDropMenuText(item)
-                            onClickDropMenu()
+                            onSelectMenu(id, item)
                         }
                     )
                 }

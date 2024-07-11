@@ -28,19 +28,25 @@ data class DropMenuState(
 
 data class DeviceDetails(
     val id: Int = 0,
-    val category: String = "Device Category",
-    val location: String = "Device Location",
+    var deviceCharacter: Map<String, String> = mapOf(
+        "category" to "Device Category",
+        "location" to "Device Location"
+    ),
     val status: DeviceStatus = DeviceStatus.OFF
 )
-
 class DeviceSettingViewModel(private val deviceRepository: DeviceRepository) : ViewModel() {
-    var deviceUiState by mutableStateOf(DeviceUiState())
-        private set
+    private var _deviceDetails by mutableStateOf(DeviceDetails())
+    private var _deviceUiState by mutableStateOf(DeviceUiState().copy(deviceDetails = _deviceDetails))
+    private val _dropDownMenuStates = mutableStateOf(
+        mapOf(
+            "category" to DropMenuState(),
+            "location" to DropMenuState()
+        )
+    )
 
-    var categoryMenuState by mutableStateOf(DropMenuState())
-        private set
-    var locationMenuState by mutableStateOf(DropMenuState())
-        private set
+    val deviceUiState get() = _deviceUiState
+    val dropDownMenuStates get() = _dropDownMenuStates
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -51,49 +57,39 @@ class DeviceSettingViewModel(private val deviceRepository: DeviceRepository) : V
 
     private fun validateInput(uiState: DeviceDetails = deviceUiState.deviceDetails): Boolean {
         return with(uiState) {
-            deviceCategoryArray.contains(category) && deviceLocationArray.contains(location)
+            deviceCategoryArray.contains(deviceCharacter["category"]) &&
+                    deviceLocationArray.contains(deviceCharacter["location"])
         }
     }
 
-    fun updateDeviceUiState(deviceDetails: DeviceDetails) {
-        deviceUiState = DeviceUiState(
-            deviceDetails = deviceDetails,
-            isEntryValid = validateInput(deviceDetails)
+    fun updateTextField(id:String, text:String) {
+        _dropDownMenuStates.value = _dropDownMenuStates.value.mapValues {
+            if (it.key == id) it.value.copy(selectedText = text, isExpanded = false)
+            else it.value
+        }
+        _deviceDetails = _deviceDetails.copy(
+            deviceCharacter = _deviceDetails.deviceCharacter.mapValues {
+                if(it.key == id) text
+                else it.value
+            }
+        )
+
+        _deviceUiState = _deviceUiState.copy(
+            isEntryValid = validateInput(_deviceDetails)
         )
     }
 
-    fun clickCategoryMenu() {
-        categoryMenuState = categoryMenuState.copy(
-            isExpanded = !categoryMenuState.isExpanded
-        )
+    fun onDropdownMenuToggle(id:String) {
+        _dropDownMenuStates.value = _dropDownMenuStates.value.mapValues {
+            if (it.key == id) it.value.copy(isExpanded = !it.value.isExpanded)
+            else it.value
+        }
     }
 
-    fun clickLocationMenu() {
-        locationMenuState = locationMenuState.copy(
-            isExpanded = !locationMenuState.isExpanded
-        )
-    }
-
-    fun updateCategoryText(text: String) {
-        categoryMenuState = categoryMenuState.copy(
-            selectedText = text
-        )
-    }
-
-    fun updateLocationText(text: String) {
-        locationMenuState = locationMenuState.copy(
-            selectedText = text
-        )
-    }
-    fun dropMenuDismiss(dropMenuState: DropMenuState) {
-        if (dropMenuState == categoryMenuState) {
-            categoryMenuState = categoryMenuState.copy(
-                isExpanded = false
-            )
-        } else if (dropMenuState == locationMenuState) {
-            locationMenuState = locationMenuState.copy(
-                isExpanded = false
-            )
+    fun onDropdownMenuDismiss(id:String) {
+        _dropDownMenuStates.value = _dropDownMenuStates.value.mapValues {
+            if (it.key == id) it.value.copy(isExpanded = false)
+            else it.value
         }
     }
 
@@ -105,12 +101,13 @@ class DeviceSettingViewModel(private val deviceRepository: DeviceRepository) : V
 
 }
 
+
 fun CreationExtras.smartHomeApplication(): SmartHomeApplication =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as SmartHomeApplication)
 
 fun DeviceDetails.toDevice(): Device = Device(
     id = id,
-    category = category,
-    location = location,
+    category = deviceCharacter["category"]!!,
+    location = deviceCharacter["location"]!!,
     status = status
 )
