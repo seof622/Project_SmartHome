@@ -34,6 +34,7 @@ data class DeviceDetails(
     ),
     val status: DeviceStatus = DeviceStatus.OFF
 )
+
 class DeviceSettingViewModel(private val deviceRepository: DeviceRepository) : ViewModel() {
     private var _deviceDetails by mutableStateOf(DeviceDetails())
     private var _deviceUiState by mutableStateOf(DeviceUiState().copy(deviceDetails = _deviceDetails))

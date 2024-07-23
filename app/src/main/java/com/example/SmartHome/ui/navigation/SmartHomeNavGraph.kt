@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.SmartHome.ui.Device.DeviceSettingScreen
+import com.example.SmartHome.ui.Device.DeviceWifiSettingScreen
 import com.example.SmartHome.ui.home.AddSmartDeviceScreen
 import com.example.SmartHome.ui.home.SmartHomeMainScreen
 
@@ -20,9 +21,14 @@ fun SmartHomeNavHost(
     ) {
         composable(route = AddSmartDeviceScreen.Main.name) {
             SmartHomeMainScreen(
-                onClickAddButton = { navController.navigate(AddSmartDeviceScreen.DeviceSetting.name) }
+                onClickAddButton = { navController.navigate(AddSmartDeviceScreen.DeviceWIFISetting.name) }
             )
         }
+
+        composable(route = AddSmartDeviceScreen.DeviceWIFISetting.name) {
+            DeviceWifiSettingScreen()
+        }
+
         composable(route = AddSmartDeviceScreen.DeviceSetting.name) {
             DeviceSettingScreen(
                 navigateBack = { navController.popBackStack() },

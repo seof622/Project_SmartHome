@@ -44,7 +44,7 @@ import com.example.SmartHome.R
 enum class AddSmartDeviceScreen() {
     Main,
     DeviceSetting,
-    WIFISetting,
+    DeviceWIFISetting,
     Complete
 }
 
