@@ -41,7 +41,7 @@ import com.example.SmartHome.data.Device.mockDeviceList
 import com.example.SmartHome.R
 
 
-enum class AddSmartDeviceScreen() {
+enum class AddSmartDeviceScreen {
     Main,
     DeviceSetting,
     DeviceWIFISetting,
@@ -60,7 +60,8 @@ fun SmartHomeMainScreen(
                 canNavigateBack = false
             )
         }
-    ) {innerPadding ->
+    ) {
+        innerPadding ->
         Column(modifier = modifier.padding(innerPadding)) {
             Button(
                 modifier = Modifier.padding(12.dp),

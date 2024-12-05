@@ -26,14 +26,16 @@ fun SmartHomeNavHost(
         }
 
         composable(route = AddSmartDeviceScreen.DeviceWIFISetting.name) {
-            DeviceWifiSettingScreen()
+            DeviceWifiSettingScreen(
+                onClickNextBtn = { navController.navigate(AddSmartDeviceScreen.DeviceSetting.name)}
+            )
         }
 
         composable(route = AddSmartDeviceScreen.DeviceSetting.name) {
             DeviceSettingScreen(
                 navigateBack = { navController.popBackStack() },
                 onClickNext = {
-                    navController.navigate(AddSmartDeviceScreen.Complete.name)
+                    navController.navigate(AddSmartDeviceScreen.Main.name)
                 }
             )
         }

@@ -31,4 +31,8 @@ class DeviceWifiSettingViewModel(): ViewModel() {
             isPasswordShow = !_deviceWifiInputState.isPasswordShow
         )
     }
+    
+    fun connectToDevice() {
+        // TODO: WIFI를 기반으로 디바이스에 원격으로 WIFI 연결해주는 함수
+    }
 }
