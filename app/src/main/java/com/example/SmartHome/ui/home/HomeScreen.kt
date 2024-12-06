@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Devices
 import androidx.compose.material.icons.outlined.PowerSettingsNew
@@ -28,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,13 +48,15 @@ enum class AddSmartDeviceScreen {
     Main,
     DeviceSetting,
     DeviceWIFISetting,
+    DeviceControl,
     Complete
 }
 
 @Composable
 fun SmartHomeMainScreen(
     modifier: Modifier = Modifier,
-    onClickAddButton: () -> Unit
+    onClickAddButton: () -> Unit,
+    onClickCardEvent: (Device) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -65,6 +70,7 @@ fun SmartHomeMainScreen(
         Column(modifier = modifier.padding(innerPadding)) {
             Button(
                 modifier = Modifier.padding(12.dp),
+                shape = RoundedCornerShape(8.dp),
                 onClick = onClickAddButton
             ) {
                 Text(
@@ -74,14 +80,20 @@ fun SmartHomeMainScreen(
                 )
             }
             DeviceGridScreen(
-                devices = mockDeviceList
+                devices = mockDeviceList,
+                onClickCardEvent = onClickCardEvent,
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeviceStatusCard(modifier: Modifier = Modifier, device: Device) {
+fun DeviceStatusCard(
+    modifier: Modifier = Modifier,
+    device: Device,
+    onClickEvent: (Device) -> Unit
+) {
     val cardColor: Color = if (device.status == DeviceStatus.ON) {
         MaterialTheme.colorScheme.primary
     } else {
@@ -89,6 +101,7 @@ fun DeviceStatusCard(modifier: Modifier = Modifier, device: Device) {
     }
     Card(
         modifier = modifier,
+        onClick = { onClickEvent(device) },
         colors = CardDefaults.cardColors(containerColor = cardColor)
     ) {
         Column(
@@ -146,7 +159,11 @@ fun DeviceStatusCard(modifier: Modifier = Modifier, device: Device) {
 }
 
 @Composable
-fun DeviceGridScreen(modifier: Modifier = Modifier, devices: List<Device>) {
+fun DeviceGridScreen(
+    modifier: Modifier = Modifier,
+    devices: List<Device>,
+    onClickCardEvent: (Device) -> Unit,
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -157,7 +174,8 @@ fun DeviceGridScreen(modifier: Modifier = Modifier, devices: List<Device>) {
         items(items = devices, key = { device -> device.id }) { device ->
             DeviceStatusCard(
                 modifier = Modifier.fillMaxSize(),
-                device = device
+                device = device,
+                onClickEvent = onClickCardEvent
             )
         }
     }
@@ -199,6 +217,10 @@ fun SmartHomeAppBar(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun DeviceGridScreenPreview() {
-    SmartHomeMainScreen(modifier = Modifier.fillMaxSize(), onClickAddButton = {})
+    SmartHomeMainScreen(
+        modifier = Modifier.fillMaxSize(),
+        onClickAddButton = {},
+        onClickCardEvent = {}
+    )
 }
 

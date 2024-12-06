@@ -40,16 +40,20 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Device
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.SmartHome.R
+import com.example.SmartHome.SmartHomeTopAppBar
 import com.example.SmartHome.ui.AppViewModelProvider
 
 @Composable
@@ -59,7 +63,12 @@ fun DeviceWifiSettingScreen(
     viewModel: DeviceWifiSettingViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     Scaffold (
-        topBar = {}
+        topBar = {
+            SmartHomeTopAppBar(
+                title = stringResource(R.string.device_wifi_setting),
+                canNavigateBack = false
+            )
+        }
     ) { innerPadding->
        DeviceWifiSettingBody(
            deviceWifiInputState = viewModel.deviceWifiInputState,
@@ -151,12 +160,20 @@ fun Modifier.addFocusCleaner(focusManager: FocusManager): Modifier {
     }
 }
 
-//@Preview
-//@Composable
-//fun DeviceWifiSettingBodyPreview() {
-//    DeviceWifiSettingBody(
-//        deviceWifiInputState = DeviceWifiInputState(),
-//
-//        Modifier.fillMaxSize()
-//    )
-//}
+@Preview
+@Composable
+fun DeviceWifiSettingScreenPreview() {
+    DeviceWifiSettingScreen(onClickNextBtn = {})
+}
+
+@Preview
+@Composable
+fun DeviceWifiSettingBodyPreview() {
+    DeviceWifiSettingBody(
+        DeviceWifiInputState(),
+        ssidTextChange = {},
+        passwordTextChange = {},
+        clickVisibilityBtn = {},
+        onClickNextBtn = {}
+    )
+}

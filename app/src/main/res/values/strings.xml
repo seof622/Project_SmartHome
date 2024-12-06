@@ -3,4 +3,6 @@
     <string name="home_title">SmartHome</string>
     <string name="add_devices">Add Device</string>
     <string name="device_setting_title">Final: Device Character Set</string>
+    <string name="device_control_title">Device Remote Control</string>
+    <string name="device_wifi_setting">Device Wifi Setting</string>
 </resources>

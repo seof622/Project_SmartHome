@@ -27,9 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.SmartHome.R
 import com.example.SmartHome.SmartHomeTopAppBar
-import com.example.SmartHome.data.Device.DeviceCharacter
-import com.example.SmartHome.data.deviceCategoryArray
-import com.example.SmartHome.data.deviceLocationArray
 import com.example.SmartHome.data.menus
 import com.example.SmartHome.ui.AppViewModelProvider
 import kotlinx.coroutines.*

@@ -7,10 +7,6 @@ enum class DeviceStatus {
     ON, OFF, LOADING
 }
 
-enum class DeviceCharacter {
-    LOCATION, CATEGORY
-}
-
 @Entity(tableName = "devices")
 data class Device (
     @PrimaryKey(autoGenerate = true)
