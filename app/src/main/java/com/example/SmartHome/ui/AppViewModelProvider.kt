@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.SmartHome.SmartHomeApplication
 import com.example.SmartHome.ui.Device.DeviceSettingViewModel
 import com.example.SmartHome.ui.Device.DeviceWifiSettingViewModel
+import com.example.SmartHome.ui.home.MQTTViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -15,6 +16,9 @@ object AppViewModelProvider {
         }
         initializer {
             DeviceWifiSettingViewModel()
+        }
+        initializer {
+            MQTTViewModel()
         }
     }
 
