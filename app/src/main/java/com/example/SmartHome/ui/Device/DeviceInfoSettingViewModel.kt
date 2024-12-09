@@ -1,5 +1,6 @@
 package com.example.SmartHome.ui.Device
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -47,9 +48,9 @@ class DeviceInfoSettingViewModel(private val deviceRepository: DeviceRepository)
     val deviceUiState get() = _deviceUiState
     val dropDownMenuStates get() = _dropDownMenuStates
 
-    private fun validateInput(uiState: DeviceDetails = deviceUiState.deviceDetails): Boolean {
+    private fun validateInput(uiState: DeviceDetails): Boolean {
         return with(uiState) {
-            deviceCategoryArray.contains(deviceCharacter["category"]) &&
+            deviceCategoryArray.contains(deviceCharacter["category"]) and
                     deviceLocationArray.contains(deviceCharacter["location"])
         }
     }
@@ -59,6 +60,7 @@ class DeviceInfoSettingViewModel(private val deviceRepository: DeviceRepository)
             if (it.key == id) it.value.copy(selectedText = text, isExpanded = false)
             else it.value
         }
+
         _deviceDetails = _deviceDetails.copy(
             deviceCharacter = _deviceDetails.deviceCharacter.mapValues {
                 if(it.key == id) text
@@ -67,6 +69,7 @@ class DeviceInfoSettingViewModel(private val deviceRepository: DeviceRepository)
         )
 
         _deviceUiState = _deviceUiState.copy(
+            deviceDetails = _deviceDetails,
             isEntryValid = validateInput(_deviceDetails)
         )
     }
@@ -86,7 +89,7 @@ class DeviceInfoSettingViewModel(private val deviceRepository: DeviceRepository)
     }
 
     suspend fun saveDevice() {
-        if (validateInput()) {
+        if (deviceUiState.isEntryValid) {
             deviceRepository.insertDevice(deviceUiState.deviceDetails.toDevice())
         }
     }

@@ -27,6 +27,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.SmartHome.SmartHomeTopAppBar
 import com.example.SmartHome.data.Device.Device
 import com.example.SmartHome.data.Device.DeviceStatus
@@ -42,6 +45,8 @@ import com.example.SmartHome.data.Device.mockDeviceList
 import com.example.SmartHome.data.mappingIcon
 import com.example.SmartHome.data.Device.mockDeviceList
 import com.example.SmartHome.R
+import com.example.SmartHome.ui.AppViewModelProvider
+import kotlinx.coroutines.flow.Flow
 
 
 enum class AddSmartDeviceScreen {
@@ -57,6 +62,7 @@ fun SmartHomeMainScreen(
     modifier: Modifier = Modifier,
     onClickAddButton: () -> Unit,
     onClickCardEvent: (Device) -> Unit,
+    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.homeFactory)
 ) {
     Scaffold(
         topBar = {
@@ -80,7 +86,7 @@ fun SmartHomeMainScreen(
                 )
             }
             DeviceGridScreen(
-                devices = mockDeviceList,
+                devices = viewModel.getAllDevices(),
                 onClickCardEvent = onClickCardEvent,
             )
         }
@@ -90,9 +96,10 @@ fun SmartHomeMainScreen(
 @Composable
 fun DeviceGridScreen(
     modifier: Modifier = Modifier,
-    devices: List<Device>,
+    devices: Flow<List<Device>>,
     onClickCardEvent: (Device) -> Unit,
 ) {
+    val deviceList by devices.collectAsState(initial = emptyList())
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -100,7 +107,7 @@ fun DeviceGridScreen(
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(12.dp)
     ) {
-        items(items = devices, key = { device -> device.id }) { device ->
+        items(items = deviceList, key = { device -> device.id }) { device ->
             DeviceStatusCard(
                 modifier = Modifier.fillMaxSize(),
                 device = device,

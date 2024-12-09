@@ -9,6 +9,7 @@ import com.example.SmartHome.SmartHomeApplication
 import com.example.SmartHome.ui.Device.DeviceControlViewModel
 import com.example.SmartHome.ui.Device.DeviceInfoSettingViewModel
 import com.example.SmartHome.ui.Device.DeviceWifiSettingViewModel
+import com.example.SmartHome.ui.home.HomeViewModel
 
 object AppViewModelProvider {
     val deviceInfoSettingFactory by lazy{
@@ -31,6 +32,14 @@ object AppViewModelProvider {
         viewModelFactory {
             initializer {
                 DeviceControlViewModel(smartHomeApplication().container.mqttRepository)
+            }
+        }
+    }
+
+    val homeFactory by lazy {
+        viewModelFactory {
+            initializer {
+                HomeViewModel(smartHomeApplication().container.deviceRepository)
             }
         }
     }
