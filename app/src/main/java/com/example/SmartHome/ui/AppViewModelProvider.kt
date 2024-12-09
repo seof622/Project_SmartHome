@@ -2,6 +2,7 @@ package com.example.SmartHome.ui
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.SmartHome.SmartHomeApplication
@@ -10,21 +11,27 @@ import com.example.SmartHome.ui.Device.DeviceInfoSettingViewModel
 import com.example.SmartHome.ui.Device.DeviceWifiSettingViewModel
 
 object AppViewModelProvider {
-    val deviceSettingFactory = viewModelFactory {
-        initializer {
-            DeviceInfoSettingViewModel(smartHomeApplication().container.deviceRepository)
+    val deviceInfoSettingFactory by lazy{
+        viewModelFactory {
+            initializer {
+                DeviceInfoSettingViewModel(smartHomeApplication().container.deviceRepository)
+            }
         }
     }
 
-    val deviceWifiSettingFactory = viewModelFactory {
-        initializer {
-            DeviceWifiSettingViewModel()
+    val deviceWifiSettingFactory by lazy {
+        viewModelFactory {
+            initializer {
+                DeviceWifiSettingViewModel()
+            }
         }
     }
 
-    val deviceControlFactory = viewModelFactory {
-        initializer {
-            DeviceControlViewModel(smartHomeApplication().container.mqttRepository)
+    val deviceControlFactory by lazy {
+        viewModelFactory {
+            initializer {
+                DeviceControlViewModel(smartHomeApplication().container.mqttRepository)
+            }
         }
     }
 }

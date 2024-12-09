@@ -13,7 +13,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,8 +25,6 @@ import com.example.SmartHome.SmartHomeTopAppBar
 import com.example.SmartHome.data.Device.Device
 import com.example.SmartHome.data.Device.DeviceStatus
 import com.example.SmartHome.ui.AppViewModelProvider
-import com.example.SmartHome.ui.home.MQTTViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun DeviceControlScreen(
@@ -52,7 +49,9 @@ fun DeviceControlScreen(
 @Composable
 fun DeviceControlBody(
     device: Device?,
-    mqttViewModel: MQTTViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    viewModel: DeviceControlViewModel = viewModel(
+        factory = AppViewModelProvider.deviceControlFactory
+    ),
     modifier: Modifier = Modifier
 ) {
     Column (
@@ -77,11 +76,11 @@ fun DeviceControlBody(
             modifier = Modifier.fillMaxWidth()
         ) {
             RemoteButton(btnText = "ON", onClickEvent = {
-                mqttViewModel.publish("device/control/${device?.id}", "On".toByteArray())
+                viewModel.onBtnClickEvent("device/control/${device?.id}")
             })
             Spacer(modifier = Modifier.size(16.dp))
             RemoteButton(btnText = "OFF", onClickEvent = {
-                mqttViewModel.publish("device/control/${device?.id}", "Off".toByteArray())
+                viewModel.offBtnClickEvent("device/control/${device?.id}")
             })
         }
     }

@@ -28,7 +28,13 @@ class MQTTRepository {
     }
 
     fun connect() {
-        mqttClient.connect()
+        try {
+            mqttClient.connect()
+        } catch (e: Exception) {
+            Log.e("Mqtt Connect", e.toString())
+        } finally {
+            Log.e("Mqtt Connect", "Connect Complete")
+        }
     }
 
     fun subscribe(topic: String) {
