@@ -33,7 +33,9 @@ fun DeviceInfoSettingScreen(
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     onClickNext: () -> Unit,
-    viewModel: DeviceInfoSettingViewModel = viewModel(factory = AppViewModelProvider.deviceSettingFactory)
+    viewModel: DeviceInfoSettingViewModel = viewModel(
+        factory = AppViewModelProvider.deviceInfoSettingFactory
+    )
 ) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
