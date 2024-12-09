@@ -4,9 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 
 data class DeviceWifiInputState(
     val ssid: String = "",
@@ -16,6 +13,7 @@ data class DeviceWifiInputState(
 
 class DeviceWifiSettingViewModel(): ViewModel() {
     private var _deviceWifiInputState by  mutableStateOf(DeviceWifiInputState())
+
     val deviceWifiInputState get() = _deviceWifiInputState
 
     fun setSSID(text: String) {

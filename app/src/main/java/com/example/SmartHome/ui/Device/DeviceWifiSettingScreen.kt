@@ -60,7 +60,9 @@ import com.example.SmartHome.ui.AppViewModelProvider
 fun DeviceWifiSettingScreen(
     modifier: Modifier = Modifier,
     onClickNextBtn: () -> Unit,
-    viewModel: DeviceWifiSettingViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: DeviceWifiSettingViewModel = viewModel(
+        factory = AppViewModelProvider.deviceWifiSettingFactory
+    )
 ) {
     Scaffold (
         topBar = {
