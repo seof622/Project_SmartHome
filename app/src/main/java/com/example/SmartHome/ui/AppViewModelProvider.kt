@@ -31,7 +31,10 @@ object AppViewModelProvider {
     val deviceControlFactory by lazy {
         viewModelFactory {
             initializer {
-                DeviceControlViewModel(smartHomeApplication().container.mqttRepository)
+                DeviceControlViewModel(
+                    smartHomeApplication().container.mqttRepository,
+                    smartHomeApplication().container.deviceRepository
+                )
             }
         }
     }

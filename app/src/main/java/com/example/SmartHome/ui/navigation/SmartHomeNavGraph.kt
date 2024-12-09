@@ -59,9 +59,8 @@ fun SmartHomeNavHost(
             arguments = listOf(navArgument("deviceId") { type = NavType.StringType })
         ) { backStackEntry->
             val deviceId = backStackEntry.arguments?.getString("deviceId")
-            val device = mockDeviceList[(deviceId?.toInt() ?: 1) - 1]
             DeviceControlScreen(
-                device = device,
+                deviceId = deviceId?.toInt() ?: 0,
             )
         }
     }

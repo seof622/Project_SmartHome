@@ -13,6 +13,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,7 +30,7 @@ import com.example.SmartHome.ui.AppViewModelProvider
 
 @Composable
 fun DeviceControlScreen(
-    device: Device?,
+    deviceId: Int,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -39,21 +41,25 @@ fun DeviceControlScreen(
             )
         }
     ) { innerPadding ->
-        DeviceControlBody(device = device, modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
+        DeviceControlBody(
+            deviceId = deviceId,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         )
     }
 }
 
 @Composable
 fun DeviceControlBody(
-    device: Device?,
+    deviceId: Int,
     viewModel: DeviceControlViewModel = viewModel(
         factory = AppViewModelProvider.deviceControlFactory
     ),
     modifier: Modifier = Modifier
 ) {
+    val device by viewModel.getDeviceInfo(deviceId).collectAsState(initial = null)
+
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -107,5 +113,5 @@ fun RemoteButton(
 @Preview
 @Composable
 fun DeviceControlScreenPreview() {
-    DeviceControlScreen(device = Device(0, "TV", "Living Room", DeviceStatus.ON))
+    DeviceControlScreen(deviceId = 0)
 }
