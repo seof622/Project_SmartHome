@@ -87,6 +87,29 @@ fun SmartHomeMainScreen(
     }
 }
 
+@Composable
+fun DeviceGridScreen(
+    modifier: Modifier = Modifier,
+    devices: List<Device>,
+    onClickCardEvent: (Device) -> Unit,
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(12.dp)
+    ) {
+        items(items = devices, key = { device -> device.id }) { device ->
+            DeviceStatusCard(
+                modifier = Modifier.fillMaxSize(),
+                device = device,
+                onClickEvent = onClickCardEvent
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceStatusCard(
@@ -157,62 +180,6 @@ fun DeviceStatusCard(
         }
     }
 }
-
-@Composable
-fun DeviceGridScreen(
-    modifier: Modifier = Modifier,
-    devices: List<Device>,
-    onClickCardEvent: (Device) -> Unit,
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(12.dp)
-    ) {
-        items(items = devices, key = { device -> device.id }) { device ->
-            DeviceStatusCard(
-                modifier = Modifier.fillMaxSize(),
-                device = device,
-                onClickEvent = onClickCardEvent
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SmartHomeAppBar(modifier: Modifier = Modifier) {
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = stringResource(R.string.home_title),
-                fontSize = 20.sp
-            )
-        }
-    )
-}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun HomeScreenPreview() {
-//    HomeScreen(Modifier.fillMaxSize())
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun DeviceCardPreview() {
-//    DeviceStatusCard(
-//        modifier = Modifier,
-//        Device(
-//            id = 1,
-//            category = "가스레인지",
-//            location = "거실",
-//            status = DeviceStatus.ON
-//        )
-//    )
-//}
 
 @Preview(showBackground = true)
 @Composable
