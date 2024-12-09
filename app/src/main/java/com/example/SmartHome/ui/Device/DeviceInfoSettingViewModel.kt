@@ -1,6 +1,5 @@
 package com.example.SmartHome.ui.Device
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -35,7 +34,7 @@ data class DeviceDetails(
     val status: DeviceStatus = DeviceStatus.OFF
 )
 
-class DeviceSettingViewModel(private val deviceRepository: DeviceRepository) : ViewModel() {
+class DeviceInfoSettingViewModel(private val deviceRepository: DeviceRepository) : ViewModel() {
     private var _deviceDetails by mutableStateOf(DeviceDetails())
     private var _deviceUiState by mutableStateOf(DeviceUiState().copy(deviceDetails = _deviceDetails))
     private val _dropDownMenuStates = mutableStateOf(
@@ -47,14 +46,6 @@ class DeviceSettingViewModel(private val deviceRepository: DeviceRepository) : V
 
     val deviceUiState get() = _deviceUiState
     val dropDownMenuStates get() = _dropDownMenuStates
-
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                DeviceSettingViewModel(smartHomeApplication().container.deviceRepository)
-            }
-        }
-    }
 
     private fun validateInput(uiState: DeviceDetails = deviceUiState.deviceDetails): Boolean {
         return with(uiState) {

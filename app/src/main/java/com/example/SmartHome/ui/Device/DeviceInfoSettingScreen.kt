@@ -15,10 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,11 +29,11 @@ import com.example.SmartHome.ui.AppViewModelProvider
 import kotlinx.coroutines.*
 
 @Composable
-fun DeviceSettingScreen(
+fun DeviceInfoSettingScreen(
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     onClickNext: () -> Unit,
-    viewModel: DeviceSettingViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: DeviceInfoSettingViewModel = viewModel(factory = AppViewModelProvider.deviceSettingFactory)
 ) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
@@ -141,7 +138,7 @@ fun DeviceSettingDropDownMenu(
 @Preview
 @Composable
 fun DeviceSettingScreenPreview() {
-    DeviceSettingScreen(
+    DeviceInfoSettingScreen(
         modifier = Modifier.fillMaxSize(),
         navigateBack = { /*TODO*/ },
         onClickNext = {},

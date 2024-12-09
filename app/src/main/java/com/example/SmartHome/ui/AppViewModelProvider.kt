@@ -5,23 +5,28 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.SmartHome.SmartHomeApplication
-import com.example.SmartHome.ui.Device.DeviceSettingViewModel
+import com.example.SmartHome.ui.Device.DeviceControlViewModel
+import com.example.SmartHome.ui.Device.DeviceInfoSettingViewModel
 import com.example.SmartHome.ui.Device.DeviceWifiSettingViewModel
-import com.example.SmartHome.ui.home.MQTTViewModel
 
 object AppViewModelProvider {
-    val Factory = viewModelFactory {
+    val deviceSettingFactory = viewModelFactory {
         initializer {
-            DeviceSettingViewModel(smartHomeApplication().container.deviceRepository)
-        }
-        initializer {
-            DeviceWifiSettingViewModel()
-        }
-        initializer {
-            MQTTViewModel()
+            DeviceInfoSettingViewModel(smartHomeApplication().container.deviceRepository)
         }
     }
 
+    val deviceWifiSettingFactory = viewModelFactory {
+        initializer {
+            DeviceWifiSettingViewModel()
+        }
+    }
+
+    val deviceControlFactory = viewModelFactory {
+        initializer {
+            DeviceControlViewModel(smartHomeApplication().container.mqttRepository)
+        }
+    }
 }
 
 fun CreationExtras.smartHomeApplication(): SmartHomeApplication =
