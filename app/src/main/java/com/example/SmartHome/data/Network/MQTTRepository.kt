@@ -42,7 +42,8 @@ class MQTTRepository {
     }
 
     fun disconnect() {
-        mqttClient.disconnect()
+        if (mqttClient.isConnected)
+            mqttClient.disconnect()
     }
 
     fun publish (topic: String, data: ByteArray) {
